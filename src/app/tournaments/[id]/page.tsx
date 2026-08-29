@@ -31,15 +31,13 @@ export default async function TournamentPage({
             <StatusBadge status={view.status} />
           </div>
         </div>
-        {view.status !== "SETUP" && (
-          <Link
-            href={`/tournaments/${view.id}/display`}
-            target="_blank"
-            className="text-sm font-semibold text-brand-blue hover:underline self-start"
-          >
-            📺 Open Projector View
-          </Link>
-        )}
+        <Link
+          href={`/tournaments/${view.id}/display`}
+          target="_blank"
+          className="text-sm font-semibold text-brand-blue hover:underline self-start"
+        >
+          📺 Open Projector View
+        </Link>
       </div>
 
       {view.status === "SETUP" && <SetupBoard view={view} />}

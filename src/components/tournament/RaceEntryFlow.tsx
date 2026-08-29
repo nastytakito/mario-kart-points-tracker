@@ -6,6 +6,7 @@ import { PlaceCarousel } from "@/components/tournament/PlaceCarousel";
 import { Button } from "@/components/ui/Button";
 import { FormError } from "@/components/ui/FormError";
 import { recordTeamRound, type PlaceEntry } from "@/lib/actions/placements";
+import { useWakeLock } from "@/hooks/useWakeLock";
 
 export function RaceEntryFlow({
   tournamentId,
@@ -25,6 +26,7 @@ export function RaceEntryFlow({
   round: number;
 }) {
   const router = useRouter();
+  useWakeLock(true);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [assignments, setAssignments] = useState<PlaceEntry[]>([]);
   const [centerValue, setCenterValue] = useState<number | null>(null);

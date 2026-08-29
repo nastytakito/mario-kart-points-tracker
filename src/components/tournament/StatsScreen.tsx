@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
+import { Confetti } from "@/components/Confetti";
 import { accentFor } from "@/components/tournament/TeamBanner";
 import { buildLeaderboard, teamLeaderboard, type TournamentView } from "@/lib/view";
 
@@ -12,7 +13,8 @@ export function StatsScreen({ view, large = false }: { view: TournamentView; lar
   return (
     <div className="flex flex-col gap-10">
       {champion && (
-        <div className="text-center flex flex-col items-center gap-2 animate-pop-in">
+        <div className="relative text-center flex flex-col items-center gap-2 animate-pop-in">
+          <Confetti />
           <span className="text-sm uppercase tracking-[0.3em] text-foreground-dim">
             Champion
           </span>

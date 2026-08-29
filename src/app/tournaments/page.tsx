@@ -4,6 +4,8 @@ import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { StatusBadge, GameBadge } from "@/components/tournament/Badges";
 
+export const dynamic = "force-dynamic";
+
 export default async function TournamentsPage() {
   const tournaments = await listTournaments();
 

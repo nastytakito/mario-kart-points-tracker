@@ -1,26 +1,92 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #0a0d1c;
+  --background-elevated: #121933;
+  --card: #182146;
+  --card-hover: #202b5c;
+  --border: #2c3766;
+  --foreground: #f4f6ff;
+  --foreground-dim: #9aa4d4;
+  --brand-red: #ff4d4d;
+  --brand-blue: #4d7cff;
+  --brand-yellow: #ffd23f;
+  --brand-green: #33d69f;
+  --brand-purple: #b98bff;
+  --brand-orange: #ff9a3d;
 }
 
 @theme inline {
   --color-background: var(--background);
+  --color-background-elevated: var(--background-elevated);
+  --color-card: var(--card);
+  --color-card-hover: var(--card-hover);
+  --color-border: var(--border);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-foreground-dim: var(--foreground-dim);
+  --color-brand-red: var(--brand-red);
+  --color-brand-blue: var(--brand-blue);
+  --color-brand-yellow: var(--brand-yellow);
+  --color-brand-green: var(--brand-green);
+  --color-brand-purple: var(--brand-purple);
+  --color-brand-orange: var(--brand-orange);
+  --font-sans: var(--font-display);
 }
 
 body {
-  background: var(--background);
+  background: radial-gradient(circle at top, #131b3d 0%, var(--background) 55%);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  min-height: 100dvh;
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+@keyframes pop-in {
+  from {
+    opacity: 0;
+    transform: scale(0.92) translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes confetti-fall {
+  from {
+    transform: translateY(-10px) rotate(0deg);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(220px) rotate(320deg);
+    opacity: 0;
+  }
+}
+
+@keyframes pulse-ring {
+  0% {
+    box-shadow: 0 0 0 0 rgba(77, 124, 255, 0.55);
+  }
+  100% {
+    box-shadow: 0 0 0 16px rgba(77, 124, 255, 0);
+  }
+}
+
+.animate-pop-in {
+  animation: pop-in 0.28s cubic-bezier(0.2, 0.8, 0.3, 1.1) both;
+}
+
+.animate-pulse-ring {
+  animation: pulse-ring 1.6s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 999px;
 }

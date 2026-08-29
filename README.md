@@ -1,36 +1,52 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Kart Points
 
-## Getting Started
+A Mario Kart tournament tracker for game nights: create teams, run races, record
+per-player finishing places, and watch team + individual standings update live.
+Built with Next.js (App Router), Prisma, and Postgres.
 
-First, run the development server:
+## Features
+
+- Landing page → tournament list → per-tournament setup, live dashboard, and
+  final stats screen.
+- Pick the game per tournament (Mario Kart 64, 8 Deluxe, or World) — each uses
+  its own official points-per-place table, including DNF (0 pts).
+- Teams with any number of racers; solo teams are automatically named after
+  their racer.
+- Move racers between teams any time; moving mid-tournament resets their
+  points to zero on the new team. Emptied teams are removed automatically.
+- Race entry is a big-button, scrollable place-picker — one racer at a time,
+  team-by-team, with a team locked out once its racers are recorded.
+- "Start Race!" unlocks every team for the next race once all teams have
+  recorded the current one.
+- A read-only, auto-refreshing `/display` view per tournament, meant to be
+  opened on a projector/TV; keeps the screen awake via the Wake Lock API.
+- Ending a tournament locks in a final stats screen (team + individual
+  leaderboards), and you can spin up a new tournament pre-populated with the
+  same teams/racers.
+
+## Local development
+
+Requires Node 20.9+ (project pins Node 24 via `.nvmrc`).
 
 ```bash
+npm install
+npx prisma dev --detach   # local Postgres for development
+npx prisma db push        # sync schema
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Database
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Uses Prisma 7 with the `pg` driver adapter against Postgres. Set `DATABASE_URL`
+(see `.env.example`). For production, use a Neon/Vercel Postgres database —
+prefer the pooled connection string for serverless compatibility.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Before deploying, generate a clean migration history against the production
+database and use `prisma migrate deploy` in the build/deploy step.
 
-## Learn More
+## Deploying to Vercel
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. Create a Postgres database (Vercel Postgres / Neon integration) and copy
+   its connection string.
+2. Set `DATABASE_URL` in the Vercel project's Environment Variables.
+3. Import the GitHub repo into Vercel; it will build with `next build`.

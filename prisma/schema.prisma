@@ -1,0 +1,91 @@
+// Prisma schema for the Mario Kart tournament tracker.
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Game {
+  MK64
+  MK8DX
+  MKWORLD
+}
+
+enum TournamentStatus {
+  SETUP
+  IN_PROGRESS
+  ENDED
+}
+
+model Tournament {
+  id         String           @id @default(cuid())
+  name       String
+  game       Game             @default(MK8DX)
+  status     TournamentStatus @default(SETUP)
+  round      Int              @default(0)
+  clonedFrom String?
+  createdAt  DateTime         @default(now())
+  startedAt  DateTime?
+  endedAt    DateTime?
+
+  teams  Team[]
+  rounds Round[]
+}
+
+model Team {
+  id           String   @id @default(cuid())
+  name         String
+  createdAt    DateTime @default(now())
+  tournamentId String
+  tournament   Tournament @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
+
+  members Member[]
+
+  @@index([tournamentId])
+}
+
+model Member {
+  id           String   @id @default(cuid())
+  username     String
+  totalPoints  Int      @default(0)
+  createdAt    DateTime @default(now())
+  teamId       String
+  team         Team     @relation(fields: [teamId], references: [id], onDelete: Cascade)
+
+  placements Placement[]
+
+  @@index([teamId])
+}
+
+model Round {
+  id           String   @id @default(cuid())
+  index        Int
+  createdAt    DateTime @default(now())
+  tournamentId String
+  tournament   Tournament @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
+
+  placements Placement[]
+
+  @@unique([tournamentId, index])
+}
+
+model Placement {
+  id        String   @id @default(cuid())
+  place     Int?
+  dnf       Boolean  @default(false)
+  points    Int
+  createdAt DateTime @default(now())
+  memberId  String
+  member    Member   @relation(fields: [memberId], references: [id], onDelete: Cascade)
+  roundId   String
+  round     Round    @relation(fields: [roundId], references: [id], onDelete: Cascade)
+  teamId    String
+
+  @@unique([memberId, roundId])
+  @@index([roundId])
+  @@index([teamId, roundId])
+}

@@ -80,8 +80,8 @@ export function StatsScreen({ view, large = false }: { view: TournamentView; lar
         <h3 className={`font-bold text-foreground-dim uppercase tracking-wide ${large ? "text-xl" : "text-sm"}`}>
           Individual Leaderboard
         </h3>
-        <Card className="overflow-hidden">
-          <table className="w-full">
+        <Card className="overflow-x-auto">
+          <table className="w-full min-w-[520px]">
             <thead>
               <tr className="text-left text-xs uppercase text-foreground-dim border-b border-border">
                 <th className="px-5 py-3">#</th>

@@ -31,22 +31,23 @@ Requires Node 20.9+ (project pins Node 24 via `.nvmrc`).
 ```bash
 npm install
 npx prisma dev --detach   # local Postgres for development
-npx prisma db push        # sync schema
+npx prisma migrate dev    # apply migrations
 npm run dev
 ```
 
 ## Database
 
-Uses Prisma 7 with the `pg` driver adapter against Postgres. Set `DATABASE_URL`
-(see `.env.example`). For production, use a Neon/Vercel Postgres database —
-prefer the pooled connection string for serverless compatibility.
+Uses Prisma 7 with the `pg` driver adapter against Postgres. Set
+`mktt_DATABASE_URL` (see `.env.example`). For production, use a Neon/Vercel
+Postgres database — prefer the pooled connection string for serverless
+compatibility.
 
-Before deploying, generate a clean migration history against the production
-database and use `prisma migrate deploy` in the build/deploy step.
+The `build` script already runs `prisma generate && prisma migrate deploy`
+before `next build`, so migrations apply automatically on every deploy.
 
 ## Deploying to Vercel
 
 1. Create a Postgres database (Vercel Postgres / Neon integration) and copy
    its connection string.
-2. Set `DATABASE_URL` in the Vercel project's Environment Variables.
+2. Set `mktt_DATABASE_URL` in the Vercel project's Environment Variables.
 3. Import the GitHub repo into Vercel; it will build with `next build`.

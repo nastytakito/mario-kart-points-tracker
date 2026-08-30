@@ -14,6 +14,24 @@
   --brand-green: #33d69f;
   --brand-purple: #b98bff;
   --brand-orange: #ff9a3d;
+  --body-gradient: radial-gradient(circle at top, #131b3d 0%, var(--background) 55%);
+}
+
+:root[data-theme="light"] {
+  --background: #f2f4fc;
+  --background-elevated: #ffffff;
+  --card: #ffffff;
+  --card-hover: #eef1fd;
+  --border: #d9deef;
+  --foreground: #171a2e;
+  --foreground-dim: #5b6180;
+  --brand-red: #e0393f;
+  --brand-blue: #3159c9;
+  --brand-yellow: #b8860a;
+  --brand-green: #0f9d70;
+  --brand-purple: #7c4fd6;
+  --brand-orange: #d9711b;
+  --body-gradient: radial-gradient(circle at top, #e4e9fb 0%, var(--background) 55%);
 }
 
 @theme inline {
@@ -34,9 +52,10 @@
 }
 
 body {
-  background: radial-gradient(circle at top, #131b3d 0%, var(--background) 55%);
+  background: var(--body-gradient);
   color: var(--foreground);
   min-height: 100dvh;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 * {

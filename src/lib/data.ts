@@ -26,8 +26,9 @@ export async function getTournamentView(id: string) {
   return buildTournamentView(tournament);
 }
 
-export async function listTournaments() {
+export async function listTournaments({ hidden = false }: { hidden?: boolean } = {}) {
   const tournaments = await prisma.tournament.findMany({
+    where: { hidden },
     orderBy: { createdAt: "desc" },
     include: {
       teams: {
@@ -44,6 +45,7 @@ export async function listTournaments() {
     name: t.name,
     game: t.game,
     status: t.status,
+    hidden: t.hidden,
     createdAt: t.createdAt,
     teamCount: t.teams.length,
     memberCount: t.teams.reduce((sum, team) => sum + team.members.length, 0),
@@ -83,7 +85,7 @@ export async function getRaceEntryData(tournamentId: string, teamId: string) {
 
 export async function listEndedTournaments() {
   return prisma.tournament.findMany({
-    where: { status: "ENDED" },
+    where: { status: "ENDED", hidden: false },
     orderBy: { createdAt: "desc" },
     select: { id: true, name: true, game: true, createdAt: true },
   });

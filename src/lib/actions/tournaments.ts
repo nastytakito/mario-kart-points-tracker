@@ -139,6 +139,29 @@ export async function startNextRound(tournamentId: string): Promise<ActionResult
   return {};
 }
 
+export async function deleteTournament(tournamentId: string): Promise<ActionResult> {
+  const tournament = await prisma.tournament.findUnique({ where: { id: tournamentId } });
+  if (!tournament) return {};
+
+  await prisma.tournament.delete({ where: { id: tournamentId } });
+
+  revalidatePath("/tournaments");
+  return {};
+}
+
+export async function setTournamentHidden(
+  tournamentId: string,
+  hidden: boolean
+): Promise<ActionResult> {
+  const tournament = await prisma.tournament.findUnique({ where: { id: tournamentId } });
+  if (!tournament) return { error: "Tournament not found." };
+
+  await prisma.tournament.update({ where: { id: tournamentId }, data: { hidden } });
+
+  revalidatePath("/tournaments");
+  return {};
+}
+
 export async function endTournament(tournamentId: string): Promise<ActionResult> {
   const tournament = await prisma.tournament.findUnique({ where: { id: tournamentId } });
   if (!tournament) return { error: "Tournament not found." };

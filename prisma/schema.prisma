@@ -27,6 +27,7 @@ model Tournament {
   game       Game             @default(MK8DX)
   status     TournamentStatus @default(SETUP)
   round      Int              @default(0)
+  hidden     Boolean          @default(false)
   clonedFrom String?
   createdAt  DateTime         @default(now())
   startedAt  DateTime?
